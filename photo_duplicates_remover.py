@@ -4,6 +4,9 @@ import os
 
 
 class DuplicatesRemover:
+    def __init__(self, dir):
+        self.dir = dir
+
     def hash_of_image(self,path):
         return imagehash.average_hash(Image.open(path)) #returns value of the hash function for photo given in path
 
@@ -27,13 +30,19 @@ class DuplicatesRemover:
     def remove_file(self,file):
         os.remove(file)
 
-    def get_paths_to_photos_in_dir(self,path):
+    def get_paths_to_photos_in_dir(self):
         paths = []
-        for filename in os.listdir(path):
+        for filename in os.listdir(self.dir):
             if filename.endswith(".jpg") or filename.endswith(".png"):
-                path_to_current_photo = path+filename
+                path_to_current_photo = self.dir+filename
                 paths.append(path_to_current_photo)
         return paths 
+
+    def remove_all_duplicated_photos_in_directory(self):
+        paths = self.get_paths_to_photos_in_dir()
+        self.remove_files(paths)
+
+
 
 
 
