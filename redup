@@ -1,6 +1,9 @@
+#!/usr/bin/python3
+
 from PIL import Image
 import imagehash
 import os
+import sys
 
 
 class DuplicatesRemover:
@@ -41,9 +44,18 @@ class DuplicatesRemover:
     def remove_all_duplicated_photos_in_directory(self):
         paths = self.get_paths_to_photos_in_dir()
         self.remove_files(paths)
+        return paths
+
+def run():
+    path_to_directory = sys.argv[1]
+    delete = sys.argv[2]
+
+    DR = DuplicatesRemover(path_to_directory)
+    if delete == "D":
+        print("Deleted:  " + str(DR.remove_all_duplicated_photos_in_directory()))
+    else:
+        print("All Photos:  " + str(DR.get_paths_to_photos_in_dir()))
 
 
-
-
-
-
+if __name__ == "__main__":
+    run()
