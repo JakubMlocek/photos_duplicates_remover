@@ -42,19 +42,36 @@ class DuplicatesRemover:
         return paths 
 
     def remove_all_duplicated_photos_in_directory(self):
-        paths = self.get_paths_to_photos_in_dir()
+        paths = self.get_duplicates(self.dir)
         self.remove_files(paths)
         return paths
 
 def run():
+    if len(sys.argv) < 3:
+        print("Too few arguments")
+        exit(0)
     path_to_directory = sys.argv[1]
-    delete = sys.argv[2]
+    if path_to_directory == ".":
+        path_to_directory = "./"
+    option = sys.argv[2]
 
     DR = DuplicatesRemover(path_to_directory)
-    if delete == "D":
-        print("Deleted:  " + str(DR.remove_all_duplicated_photos_in_directory()))
-    else:
-        print("All Photos:  " + str(DR.get_paths_to_photos_in_dir()))
+    if option == "D":
+        print("Are you sure that you want delete those files?")
+        for photo in DR.get_duplicates(DR.dir):
+            print(photo)
+        print("Y - for confirmation")
+        print("N - for exit")
+        choice = str(input())
+        if choice == "Y" or choice == "y":
+            print("Deleted:  " + str(DR.remove_all_duplicated_photos_in_directory()))
+        else:
+            exit(0)
+            
+    elif option == "S":
+        print("All Duplicates:  ")
+        for photo in DR.get_duplicates(DR.dir):
+            print(photo)
 
 
 if __name__ == "__main__":
